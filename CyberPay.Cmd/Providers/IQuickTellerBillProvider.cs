@@ -16,5 +16,7 @@ namespace CyberPay.Cmd.Providers
         QuicktellerCustomerViewModel ValidateCustomer(string paymentCode, string subscriberId);
 
         QuicktellerPaymentItemsViewModel GetBillerById(string billerId);
+
+        List<QuicktellerBankCodeResponseModel> GetBankCodes();
     }
 }

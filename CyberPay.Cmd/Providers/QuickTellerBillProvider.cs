@@ -42,7 +42,20 @@ namespace CyberPay.Cmd.Providers
             return responseobject;
         }
 
+        public List<QuicktellerBankCodeResponseModel> GetBankCodes()
+        {
+            var url = ConfigurationManager.AppSettings["GetBankCodeUrl"];
+            var bankCodeResponse = this.SendRequest("", url);
+            var responseObject = JsonConvert.DeserializeObject<QuicktellerServiceJSONResponse>(bankCodeResponse);
+            if(responseObject == null)
+            {
+                responseObject = new QuicktellerServiceJSONResponse();
+            }
 
+            var bankCodes = responseObject.bankCodes;
+            return bankCodes;
+
+        }
 
         public List<QuicktellerBillCategory> GetBillCategories()
         {

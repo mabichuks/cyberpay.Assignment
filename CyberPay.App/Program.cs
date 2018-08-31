@@ -14,13 +14,22 @@ namespace CyberPay.App
             var billProvider = new QuickTellerBillProvider();
             var biller = billProvider.GetBillerById("104");
 
+            var bankCodes = billProvider.GetBankCodes();
 
-            foreach (var item in biller.PaymentItems)
+            foreach(var code in bankCodes)
             {
-                Console.WriteLine($"{item.PaymentItemName}");
+                Console.WriteLine($"{code.BankName}");
             }
 
             Console.Read();
+
+
+            //foreach (var item in biller.PaymentItems)
+            //{
+            //    Console.WriteLine($"{item.PaymentItemName}");
+            //}
+
+            //Console.Read();
         }
     }
 }
