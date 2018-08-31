@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using System.Net;
+using CyberPay.Cmd.Payload;
 
 namespace CyberPay.WebApp.Controllers
 {
@@ -39,6 +40,20 @@ namespace CyberPay.WebApp.Controllers
 
             ApiResult<List<QuicktellerBankCodeResponseModel>> result = new ApiResult<List<QuicktellerBankCodeResponseModel>>();
             result.Data = bankCodes;
+
+            return this.Request.CreateResponse(result);
+        }
+
+        [HttpPost]
+        [Route("sendbill")]
+        public HttpResponseMessage SendBill(SendBillPaymentRequestModel srm)
+        {
+            var responseBody = billProvider.SendBillPaymentRequest(srm.Amount, srm.CustomerMobileNumber, srm.TransactionRef, srm.CardNumber, srm.PinData, srm.SecureData);
+
+            ApiResult<SendBillPaymentResponseModel> result = new ApiResult<SendBillPaymentResponseModel>()
+            {
+                Data = responseBody
+            };
 
             return this.Request.CreateResponse(result);
         }

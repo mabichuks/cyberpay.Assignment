@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using CyberPay.Cmd.Payload;
 using CyberPay.Cmd.Payload.Quickteller;
 using Newtonsoft.Json;
 
@@ -41,6 +42,33 @@ namespace CyberPay.Cmd.Providers
             var responseobject = JsonConvert.DeserializeObject<NameEnquiry>(billresponse);
             return responseobject;
         }
+
+        public SendBillPaymentResponseModel SendBillPaymentRequest(int amount, long msisdn, string transactionref, long cardBin,
+            string pinData , string secureData)
+        {
+            var url = $"{ConfigurationManager.AppSettings["QuicktellerUrl"]}/transactions";
+            SendBillPaymentRequestModel requestBody = new SendBillPaymentRequestModel
+            {
+                Amount = amount,
+                PinData = pinData,
+                SecureData = secureData,
+                CustomerMobileNumber = msisdn,
+                TransactionRef = transactionref,
+                CardNumber = cardBin
+            };
+
+            var sendBillRequestJson = JsonConvert.SerializeObject(requestBody);
+
+            var billResponse = this.SendRequest(sendBillRequestJson, url, "POST");
+
+            var responseObject = JsonConvert.DeserializeObject<SendBillPaymentResponseModel>(billResponse);
+
+            return responseObject;
+
+
+        }
+
+
 
         public List<QuicktellerBankCodeResponseModel> GetBankCodes()
         {
